@@ -44,12 +44,54 @@ const getOneUser = async(req:Request, res:Response) =>{
         const { userId } = req.params;
         const id = parseInt(userId)
         const result = await UserServices.findOneUserFromDB(id);
-
-        res.status(200).json({
-          success: true,
-          message: 'User fetched successfully!',
-          data: result,
+        if(result === null){
+            res.status(404).json({
+              success: false,
+              message: 'User not found',
+              error: {
+                code: 404,
+                description: 'User not found!',
+              },
+            });
+        }
+        else{
+            res.status(200).json({
+              success: true,
+              message: 'User fetched successfully!',
+              data: result,
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+          success: false,
+          message: 'Something went wrong',
+          data: error,
         });
+    }
+}
+
+const deleteOneUser = async(req: Request, res:Response) =>{
+    try {
+        const { userId } = req.params;
+        const id = parseInt(userId);
+        const result = await UserServices.deleteOneUserFromDB(id);
+
+        if (!result.deletedCount) {
+          res.status(404).json({
+            success: false,
+            message: 'User not found',
+            error: {
+              code: 404,
+              description: 'User not found!',
+            },
+          });
+        } else {
+          res.status(200).json({
+            success: true,
+            message: 'User deleted successfully!',
+            data: result,
+          });
+        }
     } catch (error) {
         res.status(500).json({
           success: false,
@@ -62,5 +104,6 @@ const getOneUser = async(req:Request, res:Response) =>{
 export const UserController = {
     createNewUser,
     getAllUser,
-    getOneUser
+    getOneUser,
+    deleteOneUser
 }
