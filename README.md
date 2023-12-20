@@ -7,4 +7,11 @@
 7. To Update user information : PUT query has been used to update data of a user
 8. To Delete a user : DELETE query has been used to delete a user based on particular userId
 9. To Retrieve all orders for a specific user : By using GET query orders of a particular user has been retrieved
+
+
+To run the application locally
+
+1. initialize application
+2. all the dependencies needs to be installed
+   
    
