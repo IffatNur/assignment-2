@@ -131,12 +131,24 @@ const getOrders = async(req: Request, res:Response) =>{
         const { userId } = req.params;
         const id = parseInt(userId);
         const result = await UserServices.getOrdersFromDB(id);
-        console.log(result?.orders);
+        if(result === null){
+            res.status(404).json({
+              success: false,
+              message: 'User not found',
+              error: {
+                code: 404,
+                description: 'User not found!',
+              },
+            });
+            
+        }
+        else{
             res.status(200).json({
               success: true,
               message: 'Orders retrieved successfully!',
               data: result?.orders,
             });
+        }
     } catch (error) {
         res.status(500).json({
           success: false,
